@@ -13,9 +13,26 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Customer::paginate(50);
+        $sortBy = $request->input('sortBy','id');
+        $sortDesc = $request->input('sortDesc','id');
+        $search = $request->input('search');
+        $per_page = $request->input('per_page',50);
+
+        $customers = Customer::select('customers.*');
+
+        if($search){
+            $customers->where(function($query) use ($search) {
+                $query->where('name','like',"%$search%");
+                $query->orWhere('email','like',"%$search%");
+                $query->orWhere('phone','like',"%$search%");
+            });
+        }
+
+        $customers->orderBy($sortBy, $sortDesc);
+
+        return Customer::paginate($per_page);
     }
 
     /**
@@ -87,7 +104,7 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        return Customer::find($id);
     }
 
     /**
