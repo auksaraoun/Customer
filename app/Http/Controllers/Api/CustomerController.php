@@ -32,7 +32,7 @@ class CustomerController extends Controller
 
         $customers->orderBy($sortBy, $sortDesc);
 
-        return Customer::paginate($per_page);
+        return $customers->paginate($per_page);
     }
 
     /**
