@@ -25,7 +25,7 @@ class CustomerController extends Controller
         if($search){
             $customers->where(function($query) use ($search) {
                 $query->where('firstname','like',"%$search%");
-                $query->where('lastname','like',"%$search%");
+                $query->orWhere('lastname','like',"%$search%");
                 $query->orWhere('email','like',"%$search%");
                 $query->orWhere('phone','like',"%$search%");
             });
